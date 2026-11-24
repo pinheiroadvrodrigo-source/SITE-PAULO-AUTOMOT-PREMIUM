@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Painel | Premium Studio Automotivo</title>
+<meta name="theme-color" content="#0a0a0a">
+<link rel="icon" href="img/icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="blog.css">
+<style>*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:Montserrat,system-ui,sans-serif;line-height:1.6}
+img{max-width:100%;display:block}a{color:inherit;text-decoration:none}
+.wrap{width:min(1200px,92%);margin:auto}
+section{padding:60px 0 80px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;color:var(--gold);font-weight:700;font-size:.78rem;letter-spacing:3px;text-transform:uppercase}
+h1.title,h2.title{font-family:Oswald,Impact,sans-serif;text-transform:uppercase;font-size:clamp(2rem,4.4vw,3.2rem);line-height:1.08;margin:14px 0 16px}
+.lead{color:var(--muted);max-width:640px}.center{text-align:center}.center .lead{margin:auto}
+.gold-text{background:linear-gradient(90deg,#9c6e16,#f8e29a,#d6a63a,#f8e29a,#9c6e16);-webkit-background-clip:text;background-clip:text;color:transparent}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:800;font-size:.95rem;cursor:pointer;border:0}
+.btn-gold{background:var(--grad);color:#120d02}.btn-wa{background:var(--green);color:#fff}
+footer{border-top:1px solid #1c1c1c;padding:34px 0 50px;text-align:center;color:#888;font-size:.85rem}
+footer a{color:var(--gold2)}
+
+body{min-height:100vh}
+.box{background:linear-gradient(160deg,#151109,#0c0c0c 55%);border:1px solid var(--gold3);border-radius:22px;padding:28px}
+.login{max-width:420px;margin:8vh auto 0;text-align:center}
+.login img{height:90px;width:auto;margin:0 auto 10px}
+label{display:block;text-align:left;font-size:.78rem;font-weight:700;color:var(--gold2);margin:14px 0 6px;letter-spacing:.5px}
+input,textarea,select{width:100%;background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:13px 14px;color:#fff;font:500 .92rem Montserrat,sans-serif;outline:none}
+input:focus,textarea:focus,select:focus{border-color:var(--gold)}
+textarea{min-height:340px;resize:vertical;line-height:1.55}
+.btn{padding:13px 22px;font-size:.88rem}
+.btn-ghost{border:1.5px solid var(--gold3);color:var(--gold2);background:rgba(214,166,58,.06)}
+.btn-red{border:1.5px solid #6b2222;color:#ff8a80;background:rgba(229,57,53,.06)}
+.btn.sm{padding:8px 14px;font-size:.78rem}
+.msg{margin-top:12px;font-size:.85rem;min-height:1.2em}.msg.err{color:#ff8a80}.msg.ok{color:#7ee2a8}
+.top{position:sticky;top:0;z-index:50;background:rgba(7,7,7,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:12px;height:64px}
+.top img{height:46px;width:auto}
+.top .who{margin-left:auto;font-size:.78rem;color:var(--muted);text-align:right}
+.nav{display:flex;gap:8px;overflow-x:auto;padding:16px 0 4px;scrollbar-width:none}
+.nav button{flex:none;padding:10px 16px;border-radius:999px;border:1px solid #2a2a2a;background:#111;color:var(--txt);font:700 .84rem Montserrat,sans-serif;cursor:pointer}
+.nav button.on{background:var(--grad);color:#111;border-color:var(--gold)}
+.pane{display:none;padding:18px 0 60px}.pane.on{display:block}
+h2.h{font-family:Oswald,Impact,sans-serif;text-transform:uppercase;font-size:1.6rem;margin:6px 0 4px}
+.sub{color:var(--muted);font-size:.88rem;margin-bottom:18px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.kpi{background:#111;border:1px solid #232323;border-radius:16px;padding:16px}
+.kpi small{color:var(--muted);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.kpi b{display:block;font-family:Oswald,Impact,sans-serif;font-size:2.1rem;line-height:1.1;color:var(--gold2)}
+.chart{display:flex;align-items:flex-end;gap:3px;height:170px;padding:12px 0 0;border-bottom:1px solid #2a2a2a}
+.chart div{flex:1;background:var(--grad);border-radius:4px 4px 0 0;min-height:2px;position:relative}
+.chart div:hover:after{content:attr(data-t);position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:#000;border:1px solid var(--gold3);padding:3px 7px;border-radius:6px;font-size:.7rem;white-space:nowrap;margin-bottom:4px}
+.axis{display:flex;justify-content:space-between;color:#666;font-size:.7rem;margin-top:6px}
+.two{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;margin-top:16px}
+.rank{display:grid;gap:8px}
+.rank div{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#111;border:1px solid #222;border-radius:12px;font-size:.86rem}
+.rank div span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rank div b{color:var(--gold2);font-family:Oswald,sans-serif;font-size:1.1rem}
+.rank i{font-style:normal;color:#666;font-size:.75rem;width:20px}
+.plist{display:grid;gap:10px}
+.prow{display:flex;gap:12px;align-items:center;padding:12px;background:#111;border:1px solid #222;border-radius:16px}
+.prow img{width:86px;height:60px;object-fit:cover;border-radius:10px;flex:none;background:#000}
+.prow .inf{flex:1;min-width:0}
+.prow .inf b{display:block;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prow .inf small{color:var(--muted);font-size:.75rem}
+.prow .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.st{display:inline-block;font-size:.66rem;font-weight:800;padding:3px 8px;border-radius:999px;margin-right:6px;vertical-align:middle}
+.st.pub{background:rgba(37,211,102,.15);color:#7ee2a8}.st.ras{background:#2a2a2a;color:#bbb}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.seg{display:flex;gap:8px}.seg button{flex:1;padding:12px;border-radius:12px;border:1px solid #2a2a2a;background:#111;color:var(--txt);font:700 .86rem Montserrat,sans-serif;cursor:pointer}
+.seg button.on{background:var(--grad);color:#111;border-color:var(--gold)}
+.up{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.up img{height:80px;border-radius:10px;border:1px solid #333}
+.tool{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.tool button{padding:7px 12px;border-radius:9px;border:1px solid #2a2a2a;background:#161616;color:var(--gold2);font:700 .78rem Montserrat,sans-serif;cursor:pointer}
+.prev{background:#0b0b0b;border:1px dashed var(--gold3);border-radius:16px;padding:20px;margin-top:12px}
+.actbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;position:sticky;bottom:0;background:linear-gradient(0deg,#070707 70%,transparent);padding:16px 0}
+.hint{font-size:.76rem;color:#888;margin-top:5px;text-align:left}
+.guide{display:grid;gap:14px}
+.gstep{background:#111;border:1px solid #232323;border-radius:16px;padding:18px}
+.gstep h3{font-family:Oswald,sans-serif;text-transform:uppercase;font-size:1.15rem;color:var(--gold2);margin-bottom:6px}
+.gstep p,.gstep li{color:#ccc;font-size:.9rem}.gstep ol,.gstep ul{margin:6px 0 0 20px}
+.prompt{position:relative;background:#0a0a0a;border:1px solid #2a2416;border-radius:12px;padding:14px 14px 50px;margin-top:10px;font-size:.84rem;color:#e8e8e8;white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace}
+.prompt button{position:absolute;right:10px;bottom:10px}
+.warn{background:rgba(214,166,58,.08);border:1px solid var(--gold3);border-radius:14px;padding:14px 16px;color:#e8d9b0;font-size:.86rem}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,150px);background:#111;border:1px solid var(--gold);color:#fff;padding:12px 18px;border-radius:999px;font-weight:600;font-size:.85rem;transition:transform .35s;z-index:400}
+.toast.on{transform:translate(-50%,0)}
+@media(max-width:800px){.kpis{grid-template-columns:1fr 1fr}.two,.row2{grid-template-columns:1fr}.prow{flex-wrap:wrap}.prow .acts{width:100%;justify-content:flex-start}}
+</style>
+</head>
+<body>
+
+<!-- CONFIG FALTANDO -->
+<div class="wrap" id="vCfg" hidden>
+  <div class="box login"><img src="img/logo.png" alt=""><h2 class="h">Painel quase pronto</h2>
+  <p class="sub">Falta ligar o banco de dados (Supabase). Preencha o arquivo <b>supabase-config.js</b> com a URL e a chave anon do projeto.</p></div>
+</div>
+
+<!-- LOGIN -->
+<div class="wrap" id="vLogin" hidden>
+  <form class="box login" id="fLogin">
+    <img src="img/logo.png" alt="Premium Studio Automotivo">
+    <h2 class="h">Área do <span class="gold-text">administrador</span></h2>
+    <p class="sub">Entre para postar artigos, vídeos e ver os acessos do site.</p>
+    <label>E-mail</label><input id="lEmail" type="email" autocomplete="username" required>
+    <label>Senha</label><input id="lPass" type="password" autocomplete="current-password" required>
+    <button class="btn btn-gold" style="width:100%;margin-top:18px">Entrar</button>
+    <button type="button" class="btn btn-ghost sm" id="lForgot" style="margin-top:12px">Esqueci minha senha</button>
+    <div class="msg" id="lMsg"></div>
+  </form>
+</div>
+
+<!-- NOVA SENHA -->
+<div class="wrap" id="vReset" hidden>
+  <form class="box login" id="fReset">
+    <img src="img/logo.png" alt=""><h2 class="h">Criar nova senha</h2>
+    <label>Nova senha (mín. 8 caracteres)</label><input id="rPass" type="password" minlength="8" autocomplete="new-password" required>
+    <button class="btn btn-gold" style="width:100%;margin-top:18px">Salvar senha</button>
+    <div class="msg" id="rMsg"></div>
+  </form>
+</div>
+
+<!-- PAINEL -->
+<div id="vApp" hidden>
+  <div class="top"><div class="wrap">
+    <a href="./" target="_blank"><img src="img/logo.png" alt="Premium Studio Automotivo"></a>
+    <div class="who"><span id="whoEmail"></span><br><a href="#" id="sair" style="color:var(--gold2)">Sair</a></div>
+  </div></div>
+  <div class="wrap">
+    <div class="nav" id="nav">
+      <button class="on" data-p="pStats">📊 Acessos</button>
+      <button data-p="pPosts">📚 Meus posts</button>
+      <button data-p="pEdit" id="navNovo">✍️ Novo post</button>
+      <button data-p="pGuia">💡 Como criar com ChatGPT</button>
+      <button data-p="pGoogle">🔎 Google</button>
+    </div>
+
+    <!-- ACESSOS -->
+    <section class="pane on" id="pStats">
+      <h2 class="h">Acessos do <span class="gold-text">site</span></h2>
+      <p class="sub">Cada visita conta 1 vez por pessoa a cada vez que ela abre o site. Atualiza na hora.</p>
+      <div class="kpis">
+        <div class="kpi"><small>Hoje</small><b id="kHoje">–</b></div>
+        <div class="kpi"><small>Últimos 7 dias</small><b id="k7">–</b></div>
+        <div class="kpi"><small>Últimos 30 dias</small><b id="k30">–</b></div>
+        <div class="kpi"><small>No blog (30 dias)</small><b id="kBlog">–</b></div>
+      </div>
+      <div class="box" style="margin-top:16px;padding:20px">
+        <b style="font-size:.9rem">Visitas por dia (30 dias)</b> <small style="color:var(--muted)" id="kCel"></small>
+        <div class="chart" id="chart"></div><div class="axis" id="axis"></div>
+      </div>
+      <div class="two">
+        <div class="box" style="padding:20px"><b style="font-size:.9rem">🏆 Artigos e vídeos mais vistos</b><div class="rank" id="rankPosts" style="margin-top:12px"></div></div>
+        <div class="box" style="padding:20px"><b style="font-size:.9rem">🌐 De onde vêm as visitas (30 dias)</b><div class="rank" id="rankOrig" style="margin-top:12px"></div></div>
+      </div>
+      <button class="btn btn-ghost sm" id="reload" style="margin-top:16px">↻ Atualizar números</button>
+    </section>
+
+    <!-- POSTS -->
+    <section class="pane" id="pPosts">
+      <h2 class="h">Meus <span class="gold-text">posts</span></h2>
+      <p class="sub">Toque em editar para mudar, ou em publicar/despublicar.</p>
+      <div class="plist" id="plist"></div>
+    </section>
+
+    <!-- EDITOR -->
+    <section class="pane" id="pEdit">
+      <h2 class="h" id="edTitle">Novo <span class="gold-text">post</span></h2>
+      <p class="sub">Escreva (ou cole o texto do ChatGPT), coloque a imagem de capa e publique.</p>
+      <div class="box">
+        <label>O que você vai postar?</label>
+        <div class="seg" id="edTipo"><button type="button" class="on" data-v="blog">📝 Artigo do blog</button><button type="button" data-v="video">🎬 Vídeo</button></div>
+
+        <label>Título</label>
+        <input id="edTit" maxlength="120" placeholder="Ex.: Vitrificação vale a pena? Tudo o que você precisa saber">
+        <div class="hint">Endereço: <span id="edSlugView" style="color:var(--gold2)"></span></div>
+
+        <label>Resumo (aparece no Google e nos cards — até 160 letras)</label>
+        <input id="edRes" maxlength="200" placeholder="Ex.: Descubra quanto dura a vitrificação, quanto custa e quando vale a pena fazer no seu carro em Leme–SP.">
+        <div class="hint"><span id="edResN">0</span>/160</div>
+
+        <div id="boxVideo" hidden>
+          <label>Link do vídeo (YouTube, Instagram Reels ou TikTok)</label>
+          <input id="edVid" placeholder="https://www.instagram.com/reel/...">
+          <div class="hint">Ou envie o arquivo do vídeo (MP4 até 50 MB):</div>
+          <div class="up" style="margin-top:8px"><input type="file" id="edVidFile" accept="video/mp4,video/webm,video/quicktime" style="max-width:300px"><span class="hint" id="edVidMsg"></span></div>
+        </div>
+
+        <label>Imagem de capa</label>
+        <div class="up"><input type="file" id="edCapaFile" accept="image/*" style="max-width:300px"><img id="edCapaPrev" hidden alt=""><button type="button" class="btn btn-red sm" id="edCapaDel" hidden>Remover</button></div>
+        <div class="hint">Use foto real do studio ou uma imagem criada no ChatGPT (formato horizontal 16:9).</div>
+
+        <label>Texto <span id="edTxtOpt" style="color:var(--muted);font-weight:500">(opcional para vídeos)</span></label>
+        <div class="tool">
+          <button type="button" data-ins="## ">Título</button>
+          <button type="button" data-ins="### ">Subtítulo</button>
+          <button type="button" data-wrap="**">Negrito</button>
+          <button type="button" data-ins="- ">• Lista</button>
+          <button type="button" id="edImgBtn">🖼️ Imagem no texto</button>
+          <button type="button" id="edPrevBtn">👁️ Ver como fica</button>
+          <input type="file" id="edImgFile" accept="image/*" hidden>
+        </div>
+        <textarea id="edTxt" placeholder="Cole aqui o texto do ChatGPT. Linhas que começam com ## viram títulos, - viram lista e **texto** fica em negrito."></textarea>
+        <div class="prev art" id="edPrev" hidden><div class="txt"></div></div>
+      </div>
+      <div class="actbar">
+        <button class="btn btn-gold" id="edPub">🚀 Publicar no site</button>
+        <button class="btn btn-ghost" id="edDraft">💾 Salvar rascunho</button>
+        <button class="btn btn-ghost" id="edNew">+ Começar outro</button>
+        <span class="msg" id="edMsg"></span>
+      </div>
+    </section>
+
+    <!-- GUIA -->
+    <section class="pane" id="pGuia">
+      <h2 class="h">Criando conteúdo com o <span class="gold-text">ChatGPT</span></h2>
+      <p class="sub">Passo a passo para postar 1 artigo por semana sem travar. Toque em “Copiar”, cole no ChatGPT e troque o que estiver entre [colchetes].</p>
+      <div class="guide">
+        <div class="gstep"><h3>1. Escolha o tema da semana</h3>
+          <p>Peça ao ChatGPT ideias do que as pessoas de Leme e região pesquisam no Google sobre cuidados com o carro.</p>
+          <div class="prompt">Sou dono da Premium Studio Automotivo, estética automotiva em Leme–SP (lavagem premium, polimento técnico, vitrificação, higienização interna, polimento de faróis, rastreador com bloqueio e cotação de seguro auto).
+Me dê 20 ideias de artigos para o blog do meu site que respondam dúvidas reais que as pessoas pesquisam no Google antes de contratar esses serviços. Para cada ideia, mostre:
+- título chamativo (com a palavra-chave principal)
+- a palavra-chave que a pessoa digita no Google
+- se a busca é de quem está pronto para contratar ou só pesquisando
+Priorize temas com intenção de compra e cite Leme–SP quando fizer sentido.<button class="btn btn-gold sm">Copiar</button></div>
+        </div>
+        <div class="gstep"><h3>2. Gere o artigo completo</h3>
+          <div class="prompt">Escreva um artigo para o blog da Premium Studio Automotivo (estética automotiva em Leme–SP) com o tema: "[COLE O TÍTULO ESCOLHIDO]".
+Regras:
+- Entre 800 e 1.200 palavras, português do Brasil, linguagem simples, como um especialista conversando com o cliente
+- Use a palavra-chave "[PALAVRA-CHAVE]" no primeiro parágrafo, em pelo menos um subtítulo e no final
+- Organize com subtítulos usando ## e ###, listas com "-" e destaques em **negrito**
+- Inclua uma seção de perguntas frequentes (3 a 5 perguntas) no final
+- Não invente preços, garantias ou números que eu não informei. O rastreador custa R$ 150 de instalação + R$ 60/mês; os outros serviços são sob orçamento
+- Termine com uma chamada para agendar pelo WhatsApp na Premium Studio Automotivo, R. Isacó Fiocco, 354 – Vila Joest, Leme–SP
+- No final, separado, me dê: 1 resumo de até 155 caracteres para o Google<button class="btn btn-gold sm">Copiar</button></div>
+          <p style="margin-top:10px">👉 Cole o texto no campo <b>Texto</b> do “Novo post”, o título no <b>Título</b> e o resumo no <b>Resumo</b>.</p>
+        </div>
+        <div class="gstep"><h3>3. Crie a imagem de capa</h3>
+          <p>No ChatGPT (ele cria imagens), peça:</p>
+          <div class="prompt">Crie uma imagem fotográfica realista, formato horizontal 16:9, para a capa de um artigo de blog sobre "[TEMA]".
+Cena: carro [MODELO E COR] dentro de um studio de estética automotiva moderno, iluminação profissional em tons dourados e pretos, reflexos na pintura, aparência premium.
+Sem textos, sem letras, sem logotipos e sem marcas de carro visíveis.<button class="btn btn-gold sm">Copiar</button></div>
+          <ul style="margin-top:10px"><li>Baixe a imagem e envie em <b>Imagem de capa</b>. O painel já reduz o tamanho sozinho.</li>
+          <li>Sempre que der, prefira <b>fotos reais</b> dos carros atendidos: passam mais confiança e o Google valoriza.</li></ul>
+        </div>
+        <div class="gstep"><h3>4. Vídeos</h3>
+          <p>Poste o vídeo no Instagram/TikTok/YouTube, copie o link e cole em “🎬 Vídeo”. Para o texto que acompanha o vídeo:</p>
+          <div class="prompt">Fiz um vídeo mostrando [O QUE APARECE NO VÍDEO, ex.: o antes e depois do polimento de um Jetta GLI preto].
+Escreva:
+1) um título para o vídeo com palavra-chave de busca local (Leme–SP)
+2) um resumo de até 155 caracteres
+3) um texto de 150 a 250 palavras explicando o serviço mostrado, com ## subtítulos, para publicar junto com o vídeo no blog
+4) uma legenda para o Instagram com 5 hashtags locais
+Não invente preços.<button class="btn btn-gold sm">Copiar</button></div>
+        </div>
+        <div class="gstep"><h3>Antes de publicar, confira</h3>
+          <ul><li>Leia o texto todo: o ChatGPT às vezes inventa coisas. Corrija preços, prazos e promessas.</li>
+          <li>Título com o serviço + Leme (quando fizer sentido).</li>
+          <li>Toque em “👁️ Ver como fica”.</li>
+          <li>Constância vence: 1 artigo por semana é melhor que 10 de uma vez.</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- GOOGLE -->
+    <section class="pane" id="pGoogle">
+      <h2 class="h">Google <span class="gold-text">Search Console</span></h2>
+      <p class="sub">É onde o Google mostra quantas vezes o site apareceu nas buscas, quantos cliques recebeu e por quais palavras.</p>
+      <div class="guide">
+        <div class="gstep"><h3>Abrir o painel do Google</h3>
+          <p>Entre com o Gmail que foi cadastrado como dono do site.</p>
+          <p style="margin-top:12px"><a class="btn btn-gold sm" href="https://search.google.com/search-console?resource_id=sc-domain:esteticaautomotivapremium.com.br" target="_blank" rel="noopener">Abrir Search Console</a>
+          <a class="btn btn-ghost sm" href="https://business.google.com/" target="_blank" rel="noopener">Perfil da Empresa no Google</a></p>
+          <ul style="margin-top:12px"><li><b>Desempenho</b>: cliques, impressões e as palavras que trouxeram gente ao site.</li>
+          <li><b>Páginas</b>: quais páginas o Google já colocou nas buscas.</li></ul>
+        </div>
+        <div class="gstep"><h3>Avisar o Google de um post novo</h3>
+          <p>Depois de publicar, copie o link, cole na barra de cima do Search Console (“Inspecionar URL”) e toque em <b>Solicitar indexação</b>. Isso acelera o post aparecer no Google.</p>
+          <div class="rank" id="gLinks" style="margin-top:12px"></div>
+        </div>
+        <div class="warn">⚠️ Os números do Google chegam com 2 a 3 dias de atraso e só aparecem depois que o site estiver cadastrado. Os números da aba <b>📊 Acessos</b> são do próprio site e são na hora.</div>
+      </div>
+    </section>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="psa.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const SITE='https://esteticaautomotivapremium.com.br/';
+const show=v=>['vCfg','vLogin','vReset','vApp'].forEach(x=>$(x).hidden=x!==v);
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),2600)}
+function msg(el,t,cls){el.textContent=t||'';el.className='msg '+(cls||'')}
+const sb=PSA.sb;
+
+/* ---------- AUTENTICAÇÃO ---------- */
+let recovering=/type=recovery/.test(location.hash);
+async function boot(){
+  if(!PSA.ready) return show('vCfg');
+  if(recovering) return show('vReset');
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session) return show('vLogin');
+  const {data:isAdm}=await sb.rpc('is_admin');
+  if(!isAdm){await sb.auth.signOut();show('vLogin');return msg($('lMsg'),'Este e-mail não tem permissão de administrador.','err')}
+  $('whoEmail').textContent=session.user.email;
+  show('vApp');loadStats();loadPosts();
+}
+if(PSA.ready){
+  sb.auth.onAuthStateChange(ev=>{if(ev==='PASSWORD_RECOVERY'){recovering=true;show('vReset')}});
+  $('fLogin').onsubmit=async e=>{e.preventDefault();msg($('lMsg'),'Entrando...');
+    const {error}=await sb.auth.signInWithPassword({email:$('lEmail').value.trim(),password:$('lPass').value});
+    if(error) return msg($('lMsg'),'E-mail ou senha incorretos.','err');
+    msg($('lMsg'),'');boot();
+  };
+  $('lForgot').onclick=async()=>{const em=$('lEmail').value.trim();if(!em)return msg($('lMsg'),'Digite seu e-mail acima e toque de novo.','err');
+    const {error}=await sb.auth.resetPasswordForEmail(em,{redirectTo:location.origin+location.pathname});
+    msg($('lMsg'),error?'Não foi possível enviar agora. Tente em alguns minutos.':'Enviamos um link para o seu e-mail.',error?'err':'ok')};
+  $('fReset').onsubmit=async e=>{e.preventDefault();
+    const {error}=await sb.auth.updateUser({password:$('rPass').value});
+    if(error) return msg($('rMsg'),'Erro: '+error.message,'err');
+    msg($('rMsg'),'Senha salva! Entrando...','ok');recovering=false;history.replaceState(null,'',location.pathname);setTimeout(boot,800)};
+  $('sair').onclick=async e=>{e.preventDefault();await sb.auth.signOut();show('vLogin')};
+}
+
+/* ---------- NAVEGAÇÃO ---------- */
+function go(p){document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.p===p));document.querySelectorAll('.pane').forEach(x=>x.classList.toggle('on',x.id===p));scrollTo(0,0)}
+$('nav').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='navNovo'&&!ed.id)resetEd();go(b.dataset.p)};
+
+/* ---------- ACESSOS ---------- */
+let posts=[];
+async function loadStats(){
+  const {data,error}=await sb.rpc('admin_stats',{p_days:30});
+  if(error||!data){toast('Não consegui carregar os acessos');return}
+  $('kHoje').textContent=data.hoje;$('k7').textContent=data.d7;$('k30').textContent=data.d30;$('kBlog').textContent=data.blog30;
+  $('kCel').textContent=data.d30?'· '+Math.round(data.celular30*100/data.d30)+'% pelo celular':'';
+  const d=data.diario||[],mx=Math.max(1,...d.map(x=>x.n));
+  $('chart').innerHTML=d.map(x=>`<div style="height:${Math.max(1,x.n*100/mx)}%" data-t="${x.dia}: ${x.n}"></div>`).join('');
+  $('axis').innerHTML=d.length?`<span>${d[0].dia}</span><span>${d[Math.floor(d.length/2)].dia}</span><span>${d[d.length-1].dia}</span>`:'';
+  const o=data.origens||[];
+  $('rankOrig').innerHTML=o.length?o.map((x,i)=>`<div><i>${i+1}</i><span>${PSA.esc(x.origem)}</span><b>${x.n}</b></div>`).join(''):'<p class="hint">Ainda sem visitas.</p>';
+}
+function renderRank(){
+  const r=[...posts].sort((a,b)=>b.views-a.views).slice(0,10);
+  $('rankPosts').innerHTML=r.length?r.map((p,i)=>`<div><i>${i+1}</i><span>${p.tipo==='video'?'🎬':'📝'} ${PSA.esc(p.titulo)}</span><b>${p.views}</b></div>`).join(''):'<p class="hint">Publique o primeiro post para ver aqui.</p>';
+}
+$('reload').onclick=()=>{loadStats();loadPosts();toast('Atualizado')};
+
+/* ---------- LISTA DE POSTS ---------- */
+async function loadPosts(){
+  const {data}=await sb.from('posts').select('*').order('criado_em',{ascending:false});
+  posts=data||[];renderRank();
+  $('plist').innerHTML=posts.length?posts.map(p=>`<div class="prow">
+    <img src="${PSA.esc(PSA.thumb(p))}" alt="">
+    <div class="inf"><b>${PSA.esc(p.titulo)}</b><small><span class="st ${p.publicado?'pub':'ras'}">${p.publicado?'NO AR':'RASCUNHO'}</span>${p.tipo==='video'?'🎬 Vídeo':'📝 Artigo'} · ${PSA.date(p.criado_em)} · 👁️ ${p.views} acessos</small></div>
+    <div class="acts">
+      <button class="btn btn-ghost sm" data-a="edit" data-id="${p.id}">✏️ Editar</button>
+      <button class="btn btn-ghost sm" data-a="pub" data-id="${p.id}">${p.publicado?'Tirar do ar':'Publicar'}</button>
+      ${p.publicado?`<a class="btn btn-ghost sm" href="post.html?s=${encodeURIComponent(p.slug)}" target="_blank">Ver</a>`:''}
+      <button class="btn btn-red sm" data-a="del" data-id="${p.id}">Apagar</button>
+    </div></div>`).join(''):'<p class="empty">Nenhum post ainda. Toque em ✍️ Novo post.</p>';
+  const pub=posts.filter(p=>p.publicado);
+  $('gLinks').innerHTML=pub.length?pub.map(p=>{const u=SITE+'post.html?s='+encodeURIComponent(p.slug);return `<div><span>${PSA.esc(p.titulo)}</span><button class="btn btn-ghost sm" data-copy="${PSA.esc(u)}">Copiar link</button></div>`}).join(''):'<p class="hint">Os links aparecem aqui quando você publicar.</p>';
+}
+$('plist').onclick=async e=>{
+  const b=e.target.closest('button[data-a]');if(!b)return;const p=posts.find(x=>x.id===b.dataset.id);if(!p)return;
+  if(b.dataset.a==='edit'){loadEd(p);go('pEdit')}
+  if(b.dataset.a==='pub'){await sb.from('posts').update({publicado:!p.publicado,atualizado_em:new Date().toISOString()}).eq('id',p.id);toast(p.publicado?'Post tirado do ar':'Post publicado! 🚀');loadPosts()}
+  if(b.dataset.a==='del'){if(!confirm('Apagar "'+p.titulo+'" para sempre? Não dá para desfazer.'))return;await sb.from('posts').delete().eq('id',p.id);toast('Post apagado');if(ed.id===p.id)resetEd();loadPosts()}
+};
+document.addEventListener('click',e=>{
+  const c=e.target.closest('[data-copy]');if(c){copy(c.dataset.copy);return}
+  const pb=e.target.closest('.prompt button');if(pb){copy(pb.parentElement.firstChild.textContent.trim())}
+});
+function copy(t){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('Copiado! ✅'),()=>{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove();toast('Copiado! ✅')})}
+
+/* ---------- EDITOR ---------- */
+let ed={};
+function setTipo(t){ed.tipo=t;document.querySelectorAll('#edTipo button').forEach(b=>b.classList.toggle('on',b.dataset.v===t));$('boxVideo').hidden=t!=='video';$('edTxtOpt').hidden=t!=='video'}
+$('edTipo').onclick=e=>{const b=e.target.closest('button');if(b)setTipo(b.dataset.v)};
+function slugView(){$('edSlugView').textContent=SITE+'post.html?s='+(ed.slug||PSA.slugify($('edTit').value||'titulo'))}
+$('edTit').oninput=slugView;
+$('edRes').oninput=()=>{$('edResN').textContent=$('edRes').value.length};
+function setCapa(u){ed.capa_url=u||null;$('edCapaPrev').hidden=!u;$('edCapaDel').hidden=!u;if(u)$('edCapaPrev').src=u}
+$('edCapaDel').onclick=()=>{setCapa(null);$('edCapaFile').value=''};
+function resetEd(){ed={};$('edTitle').innerHTML='Novo <span class="gold-text">post</span>';['edTit','edRes','edVid','edTxt'].forEach(i=>$(i).value='');$('edCapaFile').value='';$('edVidFile').value='';$('edVidMsg').textContent='';setCapa(null);setTipo('blog');$('edResN').textContent=0;$('edPrev').hidden=true;msg($('edMsg'),'');slugView()}
+function loadEd(p){resetEd();ed={id:p.id,slug:p.slug};$('edTitle').innerHTML='Editando <span class="gold-text">post</span>';setTipo(p.tipo);$('edTit').value=p.titulo;$('edRes').value=p.resumo||'';$('edResN').textContent=(p.resumo||'').length;$('edVid').value=p.video_url||'';$('edTxt').value=p.conteudo||'';setCapa(p.capa_url);slugView()}
+$('edNew').onclick=()=>{resetEd();toast('Novo post em branco')};
+
+// reduz imagem antes de enviar
+function shrink(file,max=1600){return new Promise(res=>{
+  if(!/^image\//.test(file.type)||/gif|svg/.test(file.type))return res(file);
+  const img=new Image();img.onload=()=>{const k=Math.min(1,max/Math.max(img.width,img.height));const c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);
+    c.getContext('2d').drawImage(img,0,0,c.width,c.height);c.toBlob(b=>res(b||file),'image/jpeg',.84);URL.revokeObjectURL(img.src)};
+  img.onerror=()=>res(file);img.src=URL.createObjectURL(file)})}
+async function upload(file,pasta){
+  const ext=(file.type==='image/jpeg'||file instanceof Blob&&!file.name)?'jpg':(file.name.split('.').pop()||'bin').toLowerCase();
+  const path=pasta+'/'+Date.now()+'-'+Math.random().toString(36).slice(2,7)+'.'+ext;
+  const {error}=await sb.storage.from('midia').upload(path,file,{contentType:file.type||'image/jpeg',upsert:false});
+  if(error)throw error;
+  return sb.storage.from('midia').getPublicUrl(path).data.publicUrl;
+}
+$('edCapaFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;msg($('edMsg'),'Enviando imagem...');
+  try{setCapa(await upload(await shrink(f),'capas'));msg($('edMsg'),'Imagem enviada ✅','ok')}catch(err){msg($('edMsg'),'Erro ao enviar imagem: '+err.message,'err')}};
+$('edVidFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;
+  if(f.size>50*1024*1024){$('edVidMsg').textContent='Vídeo maior que 50 MB. Poste no Instagram/YouTube e cole o link.';e.target.value='';return}
+  $('edVidMsg').textContent='Enviando vídeo... (pode demorar)';
+  try{$('edVid').value=await upload(f,'videos');$('edVidMsg').textContent='Vídeo enviado ✅'}catch(err){$('edVidMsg').textContent='Erro: '+err.message}};
+// barra de ferramentas
+const ta=$('edTxt');
+document.querySelector('.tool').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  const s=ta.selectionStart,en=ta.selectionEnd,v=ta.value;
+  if(b.dataset.ins){const ls=v.lastIndexOf('\n',s-1)+1;ta.value=v.slice(0,ls)+b.dataset.ins+v.slice(ls);ta.focus();ta.selectionStart=ta.selectionEnd=en+b.dataset.ins.length}
+  else if(b.dataset.wrap){const w=b.dataset.wrap,sel=v.slice(s,en)||'texto';ta.value=v.slice(0,s)+w+sel+w+v.slice(en);ta.focus();ta.selectionStart=s+w.length;ta.selectionEnd=s+w.length+sel.length}
+  else if(b.id==='edImgBtn'){$('edImgFile').click()}
+  else if(b.id==='edPrevBtn'){const pv=$('edPrev');pv.hidden=!pv.hidden;if(!pv.hidden)pv.querySelector('.txt').innerHTML=PSA.md(ta.value)||'<p class="hint">Nada escrito ainda.</p>'}
+});
+$('edImgFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;msg($('edMsg'),'Enviando imagem...');
+  try{const u=await upload(await shrink(f,1400),'conteudo');const p=ta.selectionStart;ta.value=ta.value.slice(0,p)+'\n\n![imagem]('+u+')\n\n'+ta.value.slice(p);msg($('edMsg'),'Imagem colocada no texto ✅','ok')}catch(err){msg($('edMsg'),'Erro: '+err.message,'err')}
+  e.target.value=''};
+ta.addEventListener('input',()=>{if(!$('edPrev').hidden)$('edPrev').querySelector('.txt').innerHTML=PSA.md(ta.value)});
+
+async function salvar(publicar){
+  const titulo=$('edTit').value.trim();
+  if(!titulo)return msg($('edMsg'),'Coloque um título.','err');
+  if(ed.tipo==='video'&&!$('edVid').value.trim())return msg($('edMsg'),'Cole o link do vídeo ou envie o arquivo.','err');
+  if(ed.tipo!=='video'&&$('edTxt').value.trim().length<50)return msg($('edMsg'),'Escreva o texto do artigo.','err');
+  const row={tipo:ed.tipo||'blog',titulo,resumo:$('edRes').value.trim()||null,conteudo:$('edTxt').value,capa_url:ed.capa_url||null,video_url:ed.tipo==='video'?$('edVid').value.trim():null,publicado:publicar,atualizado_em:new Date().toISOString()};
+  msg($('edMsg'),'Salvando...');
+  let res;
+  if(ed.id){res=await sb.from('posts').update(row).eq('id',ed.id).select().single()}
+  else{
+    let slug=PSA.slugify(titulo);
+    if(posts.some(p=>p.slug===slug))slug+='-'+Date.now().toString(36).slice(-4);
+    res=await sb.from('posts').insert({...row,slug}).select().single();
+  }
+  if(res.error)return msg($('edMsg'),'Erro ao salvar: '+res.error.message,'err');
+  ed.id=res.data.id;ed.slug=res.data.slug;slugView();
+  msg($('edMsg'),publicar?'Publicado! 🚀 Já está no site.':'Rascunho salvo 💾','ok');
+  toast(publicar?'Publicado! 🚀':'Rascunho salvo');loadPosts();
+}
+$('edPub').onclick=()=>salvar(true);
+$('edDraft').onclick=()=>salvar(false);
+
+resetEd();boot();
+</script>
+</body>
+</html>

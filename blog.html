@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog e Vídeos | Premium Studio Automotivo – Estética Automotiva em Leme–SP</title>
+<meta name="description" content="Dicas de estética automotiva, lavagem, polimento, vitrificação e cuidados com o carro. Artigos e vídeos da Premium Studio Automotivo em Leme–SP.">
+<link rel="canonical" href="https://esteticaautomotivapremium.com.br/blog.html">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="icon" href="img/icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="blog.css">
+<style>*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:Montserrat,system-ui,sans-serif;line-height:1.6}
+img{max-width:100%;display:block}a{color:inherit;text-decoration:none}
+.wrap{width:min(1200px,92%);margin:auto}
+section{padding:60px 0 80px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;color:var(--gold);font-weight:700;font-size:.78rem;letter-spacing:3px;text-transform:uppercase}
+h1.title,h2.title{font-family:Oswald,Impact,sans-serif;text-transform:uppercase;font-size:clamp(2rem,4.4vw,3.2rem);line-height:1.08;margin:14px 0 16px}
+.lead{color:var(--muted);max-width:640px}.center{text-align:center}.center .lead{margin:auto}
+.gold-text{background:linear-gradient(90deg,#9c6e16,#f8e29a,#d6a63a,#f8e29a,#9c6e16);-webkit-background-clip:text;background-clip:text;color:transparent}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:800;font-size:.95rem;cursor:pointer;border:0}
+.btn-gold{background:var(--grad);color:#120d02}.btn-wa{background:var(--green);color:#fff}
+footer{border-top:1px solid #1c1c1c;padding:34px 0 50px;text-align:center;color:#888;font-size:.85rem}
+footer a{color:var(--gold2)}
+</style>
+</head>
+<body>
+<header class="bp-top"><div class="wrap">
+  <a href="./"><img src="img/logo.png" alt="Premium Studio Automotivo"></a>
+  <nav><a href="./">Início</a><a href="./#agendar">Agendar</a><a class="wa" href="https://wa.me/5519993958638?text=Ol%C3%A1!%20Vim%20pelo%20blog%20e%20quero%20um%20or%C3%A7amento." target="_blank" rel="noopener">WhatsApp</a></nav>
+</div></header>
+
+<section>
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow">Blog Premium</span>
+      <h1 class="title">Dicas e vídeos para o seu carro <span class="gold-text">brilhar</span></h1>
+      <p class="lead">Lavagem, polimento, vitrificação, higienização e segurança: tudo o que você precisa saber para cuidar bem do seu veículo em Leme–SP.</p>
+      <div class="tabs" id="tabs">
+        <button class="on" data-t="">Tudo</button><button data-t="blog">📝 Artigos</button><button data-t="video">🎬 Vídeos</button>
+      </div>
+    </div>
+    <div class="pgrid" id="lista"></div>
+    <p class="empty" id="vazio" hidden>Em breve novos conteúdos por aqui. 🚗✨</p>
+  </div>
+</section>
+
+<footer>
+  <p>Premium Studio Automotivo · R. Isacó Fiocco, 354 – Vila Joest, Leme – SP</p>
+  <p><a href="./">Voltar ao site</a></p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="psa.js"></script>
+<script>
+let todos=[];
+const lista=document.getElementById('lista'),vazio=document.getElementById('vazio');
+function render(t){
+  const xs=todos.filter(p=>!t||p.tipo===t);
+  lista.innerHTML=xs.map(PSA.card).join('');
+  vazio.hidden=!!xs.length;
+}
+document.getElementById('tabs').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on',x===b));render(b.dataset.t);
+});
+(async()=>{
+  if(!PSA.ready){vazio.hidden=false;return}
+  PSA.track();
+  const {data}=await PSA.sb.from('posts').select('titulo,slug,resumo,capa_url,video_url,tipo,criado_em').eq('publicado',true).order('criado_em',{ascending:false});
+  todos=data||[];render('');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog | Premium Studio Automotivo – Leme–SP</title>
+<meta name="description" content="Dicas de estética automotiva da Premium Studio Automotivo em Leme–SP.">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="icon" href="img/icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="blog.css">
+<style>*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:Montserrat,system-ui,sans-serif;line-height:1.6}
+img{max-width:100%;display:block}a{color:inherit;text-decoration:none}
+.wrap{width:min(1200px,92%);margin:auto}
+section{padding:60px 0 80px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;color:var(--gold);font-weight:700;font-size:.78rem;letter-spacing:3px;text-transform:uppercase}
+h1.title,h2.title{font-family:Oswald,Impact,sans-serif;text-transform:uppercase;font-size:clamp(2rem,4.4vw,3.2rem);line-height:1.08;margin:14px 0 16px}
+.lead{color:var(--muted);max-width:640px}.center{text-align:center}.center .lead{margin:auto}
+.gold-text{background:linear-gradient(90deg,#9c6e16,#f8e29a,#d6a63a,#f8e29a,#9c6e16);-webkit-background-clip:text;background-clip:text;color:transparent}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:800;font-size:.95rem;cursor:pointer;border:0}
+.btn-gold{background:var(--grad);color:#120d02}.btn-wa{background:var(--green);color:#fff}
+footer{border-top:1px solid #1c1c1c;padding:34px 0 50px;text-align:center;color:#888;font-size:.85rem}
+footer a{color:var(--gold2)}
+</style>
+</head>
+<body>
+<header class="bp-top"><div class="wrap">
+  <a href="./"><img src="img/logo.png" alt="Premium Studio Automotivo"></a>
+  <nav><a href="blog.html">← Blog</a><a href="./#agendar">Agendar</a><a class="wa js-wa" href="#" target="_blank" rel="noopener">WhatsApp</a></nav>
+</div></header>
+
+<section>
+  <div class="wrap">
+    <article class="art" id="art"><p class="empty">Carregando…</p></article>
+    <div class="art">
+      <div class="cta-box">
+        <h3>Quer seu carro <span class="gold-text">assim</span>?</h3>
+        <p>Atendimento com hora marcada em Leme–SP. Orçamento rápido e sem compromisso.</p>
+        <a class="btn btn-wa js-wa" href="#" target="_blank" rel="noopener">💬 Pedir orçamento no WhatsApp</a>
+      </div>
+      <h2 class="title" style="font-size:1.6rem;margin-top:50px">Veja também</h2>
+      <div class="pgrid" id="mais" style="margin-top:16px"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Premium Studio Automotivo · R. Isacó Fiocco, 354 – Vila Joest, Leme – SP</p>
+  <p><a href="./">Voltar ao site</a> · <a href="blog.html">Blog</a></p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="psa.js"></script>
+<script>
+const slug=new URLSearchParams(location.search).get('s')||'';
+const art=document.getElementById('art');
+function setWA(titulo){
+  const msg='Olá! Li no blog '+(titulo?'"'+titulo+'" ':'')+'e quero um orçamento.';
+  document.querySelectorAll('.js-wa').forEach(a=>a.href='https://wa.me/5519993958638?text='+encodeURIComponent(msg));
+}
+function meta(name,val,prop){let m=document.querySelector(`meta[${prop?'property':'name'}="${name}"]`);if(!m){m=document.createElement('meta');m.setAttribute(prop?'property':'name',name);document.head.appendChild(m)}m.content=val}
+setWA('');
+(async()=>{
+  if(!PSA.ready||!slug){art.innerHTML='<p class="empty">Conteúdo não encontrado. <a href="blog.html" style="color:var(--gold2)">Ver o blog</a></p>';return}
+  const {data:p}=await PSA.sb.from('posts').select('*').eq('slug',slug).maybeSingle();
+  if(!p){art.innerHTML='<p class="empty">Conteúdo não encontrado. <a href="blog.html" style="color:var(--gold2)">Ver o blog</a></p>';return}
+  PSA.track(p.slug);
+  document.title=p.titulo+' | Premium Studio Automotivo – Leme–SP';
+  meta('description',(p.resumo||p.titulo).slice(0,160));
+  meta('og:title',p.titulo,1);meta('og:image',PSA.thumb(p),1);
+  let l=document.createElement('link');l.rel='canonical';l.href='https://esteticaautomotivapremium.com.br/post.html?s='+encodeURIComponent(p.slug);document.head.appendChild(l);
+  const ld={"@context":"https://schema.org","@type":p.tipo==='video'?'VideoObject':'BlogPosting',"headline":p.titulo,"name":p.titulo,"description":p.resumo||p.titulo,"image":PSA.thumb(p),"thumbnailUrl":PSA.thumb(p),"datePublished":p.criado_em,"uploadDate":p.criado_em,"author":{"@type":"Organization","name":"Premium Studio Automotivo"}};
+  const s=document.createElement('script');s.type='application/ld+json';s.textContent=JSON.stringify(ld);document.head.appendChild(s);
+  setWA(p.titulo);
+  art.innerHTML=`<span class="eyebrow">${p.tipo==='video'?'🎬 Vídeo':'📝 Artigo'}</span>
+    <h1>${PSA.esc(p.titulo)}</h1>
+    <div class="meta">${PSA.date(p.criado_em)} · Premium Studio Automotivo</div>
+    ${p.video_url?PSA.videoEmbed(p.video_url):(p.capa_url?`<div class="cover"><img src="${PSA.esc(p.capa_url)}" alt="${PSA.esc(p.titulo)}"></div>`:'')}
+    <div class="txt">${PSA.md(p.conteudo||'')}</div>`;
+  const {data:outros}=await PSA.sb.from('posts').select('titulo,slug,resumo,capa_url,video_url,tipo,criado_em').eq('publicado',true).neq('slug',p.slug).order('criado_em',{ascending:false}).limit(3);
+  document.getElementById('mais').innerHTML=(outros||[]).map(PSA.card).join('');
+})();
+</script>
+</body>
+</html>
