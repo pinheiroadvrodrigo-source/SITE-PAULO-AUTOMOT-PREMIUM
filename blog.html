@@ -69,7 +69,7 @@ document.getElementById('tabs').addEventListener('click',e=>{
 (async()=>{
   if(!PSA.ready){vazio.hidden=false;return}
   PSA.track();
-  const {data}=await PSA.sb.from('posts').select('titulo,slug,resumo,capa_url,video_url,tipo,criado_em').eq('publicado',true).order('criado_em',{ascending:false});
+  const {data}=await PSA.sb.from('psa_posts').select('titulo,slug,resumo,capa_url,video_url,tipo,criado_em').eq('publicado',true).order('criado_em',{ascending:false});
   todos=data||[];render('');
 })();
 </script>

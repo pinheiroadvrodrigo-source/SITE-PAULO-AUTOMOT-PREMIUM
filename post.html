@@ -64,7 +64,7 @@ function meta(name,val,prop){let m=document.querySelector(`meta[${prop?'property
 setWA('');
 (async()=>{
   if(!PSA.ready||!slug){art.innerHTML='<p class="empty">Conteúdo não encontrado. <a href="blog.html" style="color:var(--gold2)">Ver o blog</a></p>';return}
-  const {data:p}=await PSA.sb.from('posts').select('*').eq('slug',slug).maybeSingle();
+  const {data:p}=await PSA.sb.from('psa_posts').select('*').eq('slug',slug).maybeSingle();
   if(!p){art.innerHTML='<p class="empty">Conteúdo não encontrado. <a href="blog.html" style="color:var(--gold2)">Ver o blog</a></p>';return}
   PSA.track(p.slug);
   document.title=p.titulo+' | Premium Studio Automotivo – Leme–SP';
@@ -79,7 +79,7 @@ setWA('');
     <div class="meta">${PSA.date(p.criado_em)} · Premium Studio Automotivo</div>
     ${p.video_url?PSA.videoEmbed(p.video_url):(p.capa_url?`<div class="cover"><img src="${PSA.esc(p.capa_url)}" alt="${PSA.esc(p.titulo)}"></div>`:'')}
     <div class="txt">${PSA.md(p.conteudo||'')}</div>`;
-  const {data:outros}=await PSA.sb.from('posts').select('titulo,slug,resumo,capa_url,video_url,tipo,criado_em').eq('publicado',true).neq('slug',p.slug).order('criado_em',{ascending:false}).limit(3);
+  const {data:outros}=await PSA.sb.from('psa_posts').select('titulo,slug,resumo,capa_url,video_url,tipo,criado_em').eq('publicado',true).neq('slug',p.slug).order('criado_em',{ascending:false}).limit(3);
   document.getElementById('mais').innerHTML=(outros||[]).map(PSA.card).join('');
 })();
 </script>

@@ -83,6 +83,6 @@
     if(!ref && p.get('utm_source')) ref = p.get('utm_source');
     if(!ref && p.get('gclid')) ref = 'Google Ads';
     const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'celular' : 'computador';
-    PSA.sb.rpc('register_view', { p_path: location.pathname || '/', p_slug: slug || null, p_ref: ref || null, p_device: device }).then(()=>{}, ()=>{});
+    PSA.sb.rpc('psa_register_view', { p_path: location.pathname || '/', p_slug: slug || null, p_ref: ref || null, p_device: device }).then(()=>{}, ()=>{});
   };
 })();

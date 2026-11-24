@@ -1022,7 +1022,7 @@ setTimeout(()=>tease.classList.remove('on'),16000);
 (async()=>{try{
   if(!window.PSA||!PSA.ready)return;
   PSA.track();
-  const {data}=await PSA.sb.from('posts').select('titulo,slug,resumo,capa_url,video_url,tipo,criado_em').eq('publicado',true).order('criado_em',{ascending:false}).limit(3);
+  const {data}=await PSA.sb.from('psa_posts').select('titulo,slug,resumo,capa_url,video_url,tipo,criado_em').eq('publicado',true).order('criado_em',{ascending:false}).limit(3);
   if(data&&data.length){document.getElementById('homePosts').innerHTML=data.map(PSA.card).join('');document.getElementById('blog').hidden=false}
 }catch(e){}})();
 </script>

@@ -308,7 +308,7 @@ async function boot(){
   if(recovering) return show('vReset');
   const {data:{session}}=await sb.auth.getSession();
   if(!session) return show('vLogin');
-  const {data:isAdm}=await sb.rpc('is_admin');
+  const {data:isAdm}=await sb.rpc('psa_is_admin');
   if(!isAdm){await sb.auth.signOut();show('vLogin');return msg($('lMsg'),'Este e-mail não tem permissão de administrador.','err')}
   $('whoEmail').textContent=session.user.email;
   show('vApp');loadStats();loadPosts();
@@ -337,7 +337,7 @@ $('nav').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='
 /* ---------- ACESSOS ---------- */
 let posts=[];
 async function loadStats(){
-  const {data,error}=await sb.rpc('admin_stats',{p_days:30});
+  const {data,error}=await sb.rpc('psa_admin_stats',{p_days:30});
   if(error||!data){toast('Não consegui carregar os acessos');return}
   $('kHoje').textContent=data.hoje;$('k7').textContent=data.d7;$('k30').textContent=data.d30;$('kBlog').textContent=data.blog30;
   $('kCel').textContent=data.d30?'· '+Math.round(data.celular30*100/data.d30)+'% pelo celular':'';
@@ -355,7 +355,7 @@ $('reload').onclick=()=>{loadStats();loadPosts();toast('Atualizado')};
 
 /* ---------- LISTA DE POSTS ---------- */
 async function loadPosts(){
-  const {data}=await sb.from('posts').select('*').order('criado_em',{ascending:false});
+  const {data}=await sb.from('psa_posts').select('*').order('criado_em',{ascending:false});
   posts=data||[];renderRank();
   $('plist').innerHTML=posts.length?posts.map(p=>`<div class="prow">
     <img src="${PSA.esc(PSA.thumb(p))}" alt="">
@@ -372,8 +372,8 @@ async function loadPosts(){
 $('plist').onclick=async e=>{
   const b=e.target.closest('button[data-a]');if(!b)return;const p=posts.find(x=>x.id===b.dataset.id);if(!p)return;
   if(b.dataset.a==='edit'){loadEd(p);go('pEdit')}
-  if(b.dataset.a==='pub'){await sb.from('posts').update({publicado:!p.publicado,atualizado_em:new Date().toISOString()}).eq('id',p.id);toast(p.publicado?'Post tirado do ar':'Post publicado! 🚀');loadPosts()}
-  if(b.dataset.a==='del'){if(!confirm('Apagar "'+p.titulo+'" para sempre? Não dá para desfazer.'))return;await sb.from('posts').delete().eq('id',p.id);toast('Post apagado');if(ed.id===p.id)resetEd();loadPosts()}
+  if(b.dataset.a==='pub'){await sb.from('psa_posts').update({publicado:!p.publicado,atualizado_em:new Date().toISOString()}).eq('id',p.id);toast(p.publicado?'Post tirado do ar':'Post publicado! 🚀');loadPosts()}
+  if(b.dataset.a==='del'){if(!confirm('Apagar "'+p.titulo+'" para sempre? Não dá para desfazer.'))return;await sb.from('psa_posts').delete().eq('id',p.id);toast('Post apagado');if(ed.id===p.id)resetEd();loadPosts()}
 };
 document.addEventListener('click',e=>{
   const c=e.target.closest('[data-copy]');if(c){copy(c.dataset.copy);return}
@@ -403,9 +403,9 @@ function shrink(file,max=1600){return new Promise(res=>{
 async function upload(file,pasta){
   const ext=(file.type==='image/jpeg'||file instanceof Blob&&!file.name)?'jpg':(file.name.split('.').pop()||'bin').toLowerCase();
   const path=pasta+'/'+Date.now()+'-'+Math.random().toString(36).slice(2,7)+'.'+ext;
-  const {error}=await sb.storage.from('midia').upload(path,file,{contentType:file.type||'image/jpeg',upsert:false});
+  const {error}=await sb.storage.from('psa-midia').upload(path,file,{contentType:file.type||'image/jpeg',upsert:false});
   if(error)throw error;
-  return sb.storage.from('midia').getPublicUrl(path).data.publicUrl;
+  return sb.storage.from('psa-midia').getPublicUrl(path).data.publicUrl;
 }
 $('edCapaFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;msg($('edMsg'),'Enviando imagem...');
   try{setCapa(await upload(await shrink(f),'capas'));msg($('edMsg'),'Imagem enviada ✅','ok')}catch(err){msg($('edMsg'),'Erro ao enviar imagem: '+err.message,'err')}};
@@ -436,11 +436,11 @@ async function salvar(publicar){
   const row={tipo:ed.tipo||'blog',titulo,resumo:$('edRes').value.trim()||null,conteudo:$('edTxt').value,capa_url:ed.capa_url||null,video_url:ed.tipo==='video'?$('edVid').value.trim():null,publicado:publicar,atualizado_em:new Date().toISOString()};
   msg($('edMsg'),'Salvando...');
   let res;
-  if(ed.id){res=await sb.from('posts').update(row).eq('id',ed.id).select().single()}
+  if(ed.id){res=await sb.from('psa_posts').update(row).eq('id',ed.id).select().single()}
   else{
     let slug=PSA.slugify(titulo);
     if(posts.some(p=>p.slug===slug))slug+='-'+Date.now().toString(36).slice(-4);
-    res=await sb.from('posts').insert({...row,slug}).select().single();
+    res=await sb.from('psa_posts').insert({...row,slug}).select().single();
   }
   if(res.error)return msg($('edMsg'),'Erro ao salvar: '+res.error.message,'err');
   ed.id=res.data.id;ed.slug=res.data.slug;slugView();

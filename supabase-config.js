@@ -1,9 +1,3 @@
-/* =====================================================
-   CONFIGURAÇÃO DO SUPABASE (preencher 1 vez só)
-   Supabase > Project Settings > API
-   - Project URL      -> SUPABASE_URL
-   - anon public key  -> SUPABASE_ANON_KEY
-   (a chave "anon" é pública, pode ficar aqui. NUNCA cole a "service_role")
-   ===================================================== */
-window.SUPABASE_URL = 'COLE_AQUI_A_PROJECT_URL';
-window.SUPABASE_ANON_KEY = 'COLE_AQUI_A_ANON_KEY';
+/* Supabase do painel (chave publica, pode ficar aqui) */
+window.SUPABASE_URL = 'https://olvvrkhrxkbwnfgbgesc.supabase.co';
+window.SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9sdnZya2hyeGtid25mZ2JnZXNjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0MjQ0MDEsImV4cCI6MjA5MDAwMDQwMX0.ce2OjTtGbNS1nNTZKyHEMpDFvDrgOzK-jpO4vUYgXO8';
