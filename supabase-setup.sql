@@ -109,3 +109,38 @@ create policy "psa admin envia midia" on storage.objects for insert with check (
 drop policy if exists "psa admin apaga midia" on storage.objects;
 create policy "psa admin apaga midia" on storage.objects for delete using (bucket_id = 'psa-midia' and public.psa_is_admin());
 
+
+-- 5) Clientes (cadastro pelo site + cadastro manual no painel)
+create table if not exists public.psa_clientes (
+  id uuid primary key default gen_random_uuid(),
+  nome text not null,
+  whatsapp text,
+  email text,
+  carro text,
+  interesse text,
+  observacoes text,
+  origem text not null default 'site',
+  status text not null default 'novo',
+  aceita_ofertas boolean not null default false,
+  criado_em timestamptz not null default now()
+);
+create index if not exists psa_clientes_data on public.psa_clientes (criado_em desc);
+alter table public.psa_clientes enable row level security;
+drop policy if exists "psa admin clientes" on public.psa_clientes;
+create policy "psa admin clientes" on public.psa_clientes for all using (public.psa_is_admin()) with check (public.psa_is_admin());
+
+create or replace function public.psa_cadastro(p_nome text, p_whatsapp text, p_email text default null, p_carro text default null, p_interesse text default null, p_origem text default 'site', p_ofertas boolean default false)
+returns void language plpgsql security definer set search_path = public as $$
+declare w text := regexp_replace(coalesce(p_whatsapp,''),'\D','','g');
+begin
+  if length(trim(coalesce(p_nome,''))) < 2 then raise exception 'nome obrigatorio'; end if;
+  if length(w) < 10 then raise exception 'whatsapp invalido'; end if;
+  if (select count(*) from psa_clientes where criado_em > now() - interval '1 hour') > 200 then raise exception 'limite'; end if;
+  update psa_clientes set carro = coalesce(nullif(left(p_carro,80),''),carro), interesse = coalesce(nullif(left(p_interesse,300),''),interesse),
+    email = coalesce(nullif(left(p_email,120),''),email), aceita_ofertas = aceita_ofertas or coalesce(p_ofertas,false)
+    where whatsapp = w and criado_em > now() - interval '1 day';
+  if found then return; end if;
+  insert into psa_clientes(nome, whatsapp, email, carro, interesse, origem, aceita_ofertas)
+  values (left(trim(p_nome),80), w, nullif(left(p_email,120),''), nullif(left(p_carro,80),''), nullif(left(p_interesse,300),''), left(coalesce(p_origem,'site'),30), coalesce(p_ofertas,false));
+end $$;
+grant execute on function public.psa_cadastro(text,text,text,text,text,text,boolean) to anon, authenticated;

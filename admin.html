@@ -86,9 +86,17 @@ h2.h{font-family:Oswald,Impact,sans-serif;text-transform:uppercase;font-size:1.6
 .prompt{position:relative;background:#0a0a0a;border:1px solid #2a2416;border-radius:12px;padding:14px 14px 50px;margin-top:10px;font-size:.84rem;color:#e8e8e8;white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace}
 .prompt button{position:absolute;right:10px;bottom:10px}
 .warn{background:rgba(214,166,58,.08);border:1px solid var(--gold3);border-radius:14px;padding:14px 16px;color:#e8d9b0;font-size:.86rem}
+.cl-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.cl-bar input{flex:1;min-width:180px}.cl-bar select{width:auto}
+.cli{background:#111;border:1px solid #222;border-radius:16px;padding:14px;display:grid;gap:8px}
+.cli .h1{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.cli .h1 b{font-size:1rem}
+.cli .meta{color:var(--muted);font-size:.8rem}.cli .obs{font-size:.85rem;color:#ccc;white-space:pre-line}
+.cli .acts{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.cli .acts select{width:auto;padding:8px 10px;font-size:.8rem}
+.badge{font-size:.66rem;font-weight:800;padding:3px 8px;border-radius:999px;background:#2a2a2a;color:#ddd}
+.badge.novo{background:rgba(214,166,58,.18);color:var(--gold2)}.badge.cliente{background:rgba(37,211,102,.15);color:#7ee2a8}.badge.contato{background:rgba(127,216,255,.15);color:#9fe3ff}
+.form-cli{display:grid;grid-template-columns:1fr 1fr;gap:10px}.form-cli .full{grid-column:1/-1}.form-cli textarea{min-height:80px}
 .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,150px);background:#111;border:1px solid var(--gold);color:#fff;padding:12px 18px;border-radius:999px;font-weight:600;font-size:.85rem;transition:transform .35s;z-index:400}
 .toast.on{transform:translate(-50%,0)}
-@media(max-width:800px){.kpis{grid-template-columns:1fr 1fr}.two,.row2{grid-template-columns:1fr}.prow{flex-wrap:wrap}.prow .acts{width:100%;justify-content:flex-start}}
+@media(max-width:800px){.form-cli{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}.two,.row2{grid-template-columns:1fr}.prow{flex-wrap:wrap}.prow .acts{width:100%;justify-content:flex-start}}
 </style>
 </head>
 <body>
@@ -132,6 +140,7 @@ h2.h{font-family:Oswald,Impact,sans-serif;text-transform:uppercase;font-size:1.6
   <div class="wrap">
     <div class="nav" id="nav">
       <button class="on" data-p="pStats">📊 Acessos</button>
+      <button data-p="pClientes">👥 Clientes</button>
       <button data-p="pPosts">📚 Meus posts</button>
       <button data-p="pEdit" id="navNovo">✍️ Novo post</button>
       <button data-p="pGuia">💡 Como criar com ChatGPT</button>
@@ -147,6 +156,8 @@ h2.h{font-family:Oswald,Impact,sans-serif;text-transform:uppercase;font-size:1.6
         <div class="kpi"><small>Últimos 7 dias</small><b id="k7">–</b></div>
         <div class="kpi"><small>Últimos 30 dias</small><b id="k30">–</b></div>
         <div class="kpi"><small>No blog (30 dias)</small><b id="kBlog">–</b></div>
+        <div class="kpi"><small>Clientes novos (30 dias)</small><b id="kCli">–</b></div>
+        <div class="kpi"><small>Total de clientes</small><b id="kCliT">–</b></div>
       </div>
       <div class="box" style="margin-top:16px;padding:20px">
         <b style="font-size:.9rem">Visitas por dia (30 dias)</b> <small style="color:var(--muted)" id="kCel"></small>
@@ -157,6 +168,33 @@ h2.h{font-family:Oswald,Impact,sans-serif;text-transform:uppercase;font-size:1.6
         <div class="box" style="padding:20px"><b style="font-size:.9rem">🌐 De onde vêm as visitas (30 dias)</b><div class="rank" id="rankOrig" style="margin-top:12px"></div></div>
       </div>
       <button class="btn btn-ghost sm" id="reload" style="margin-top:16px">↻ Atualizar números</button>
+    </section>
+
+    <!-- CLIENTES -->
+    <section class="pane" id="pClientes">
+      <h2 class="h">Cadastro de <span class="gold-text">clientes</span></h2>
+      <p class="sub">Quem se cadastra pelo site aparece aqui automaticamente. Você também pode cadastrar à mão quem chegou pelo WhatsApp ou foi no studio.</p>
+      <div class="cl-bar">
+        <input id="clBusca" placeholder="🔎 Buscar por nome, WhatsApp ou carro">
+        <select id="clFiltro"><option value="">Todos</option><option value="novo">Novos</option><option value="contato">Em contato</option><option value="cliente">Clientes</option><option value="inativo">Inativos</option></select>
+        <button class="btn btn-gold sm" id="clNovoBtn">+ Cadastrar cliente</button>
+        <button class="btn btn-ghost sm" id="clCsv">⬇️ Baixar planilha</button>
+      </div>
+      <form class="box" id="clForm" hidden style="margin-bottom:14px">
+        <b id="clFormT">Novo cliente</b>
+        <div class="form-cli" style="margin-top:10px">
+          <input id="cfNome" placeholder="Nome *" required maxlength="80">
+          <input id="cfWa" placeholder="WhatsApp com DDD *" required inputmode="tel" maxlength="20">
+          <input id="cfCarro" placeholder="Carro (ex.: Civic 2020)" maxlength="80">
+          <input id="cfEmail" type="email" placeholder="E-mail (opcional)" maxlength="120">
+          <input class="full" id="cfInt" placeholder="Serviço de interesse (ex.: Vitrificação)" maxlength="300">
+          <textarea class="full" id="cfObs" placeholder="Observações (ex.: fez polimento em 10/11, voltar em 3 meses)"></textarea>
+          <label style="margin:0;display:flex;gap:8px;align-items:center;color:#ccc;font-weight:500"><input type="checkbox" id="cfOf" style="width:auto"> Aceita receber ofertas</label>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><button class="btn btn-gold sm">💾 Salvar</button><button type="button" class="btn btn-ghost sm" id="clCancel">Cancelar</button><span class="msg" id="clMsg"></span></div>
+      </form>
+      <p class="hint" id="clCount" style="margin-bottom:8px"></p>
+      <div class="plist" id="clList"></div>
     </section>
 
     <!-- POSTS -->
@@ -311,7 +349,7 @@ async function boot(){
   const {data:isAdm}=await sb.rpc('psa_is_admin');
   if(!isAdm){await sb.auth.signOut();show('vLogin');return msg($('lMsg'),'Este e-mail não tem permissão de administrador.','err')}
   $('whoEmail').textContent=session.user.email;
-  show('vApp');loadStats();loadPosts();
+  show('vApp');loadStats();loadPosts();loadClientes();
 }
 if(PSA.ready){
   sb.auth.onAuthStateChange(ev=>{if(ev==='PASSWORD_RECOVERY'){recovering=true;show('vReset')}});
@@ -351,7 +389,57 @@ function renderRank(){
   const r=[...posts].sort((a,b)=>b.views-a.views).slice(0,10);
   $('rankPosts').innerHTML=r.length?r.map((p,i)=>`<div><i>${i+1}</i><span>${p.tipo==='video'?'🎬':'📝'} ${PSA.esc(p.titulo)}</span><b>${p.views}</b></div>`).join(''):'<p class="hint">Publique o primeiro post para ver aqui.</p>';
 }
-$('reload').onclick=()=>{loadStats();loadPosts();toast('Atualizado')};
+$('reload').onclick=()=>{loadStats();loadPosts();loadClientes();toast('Atualizado')};
+
+
+/* ---------- CLIENTES ---------- */
+let clientes=[],clEdit=null;
+const ST={novo:'Novo',contato:'Em contato',cliente:'Cliente',inativo:'Inativo'};
+const fmtWa=w=>{w=String(w||'').replace(/\D/g,'');if(w.length===13&&w.startsWith('55'))w=w.slice(2);return w.length===11?`(${w.slice(0,2)}) ${w.slice(2,7)}-${w.slice(7)}`:w.length===10?`(${w.slice(0,2)}) ${w.slice(2,6)}-${w.slice(6)}`:w};
+const waNum=w=>{w=String(w||'').replace(/\D/g,'');return w.startsWith('55')&&w.length>=12?w:'55'+w};
+async function loadClientes(){
+  const {data,error}=await sb.from('psa_clientes').select('*').order('criado_em',{ascending:false});
+  if(error){$('clList').innerHTML='<p class="hint">Não consegui carregar os clientes.</p>';return}
+  clientes=data||[];renderClientes();
+  const d30=Date.now()-30*864e5;$('kCli').textContent=clientes.filter(c=>new Date(c.criado_em)>d30).length;$('kCliT').textContent=clientes.length;
+}
+function renderClientes(){
+  const q=$('clBusca').value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''),f=$('clFiltro').value;
+  const xs=clientes.filter(c=>(!f||c.status===f)&&(!q||[c.nome,c.whatsapp,c.carro,c.email,c.interesse].join(' ').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(q)));
+  $('clCount').textContent=xs.length+' de '+clientes.length+' cadastrados';
+  $('clList').innerHTML=xs.length?xs.map(c=>`<div class="cli">
+    <div class="h1"><b>${PSA.esc(c.nome)}</b><span class="badge ${c.status}">${ST[c.status]||c.status}</span>${c.aceita_ofertas?'<span class="badge">📣 aceita ofertas</span>':''}</div>
+    <div class="meta">📱 ${PSA.esc(fmtWa(c.whatsapp))}${c.carro?' · 🚗 '+PSA.esc(c.carro):''}${c.email?' · ✉️ '+PSA.esc(c.email):''}<br>${c.interesse?'⭐ '+PSA.esc(c.interesse)+' · ':''}${c.origem==='site'?'🌐 Cadastro pelo site':'✍️ Cadastro manual'} · ${PSA.date(c.criado_em)}</div>
+    ${c.observacoes?`<div class="obs">📝 ${PSA.esc(c.observacoes)}</div>`:''}
+    <div class="acts">
+      <a class="btn btn-wa sm" target="_blank" rel="noopener" href="https://wa.me/${waNum(c.whatsapp)}?text=${encodeURIComponent('Olá '+c.nome.split(' ')[0]+', tudo bem? Aqui é da Premium Studio Automotivo 🚗✨')}">💬 WhatsApp</a>
+      <select data-st="${c.id}">${Object.keys(ST).map(k=>`<option value="${k}"${k===c.status?' selected':''}>${ST[k]}</option>`).join('')}</select>
+      <button class="btn btn-ghost sm" data-ce="${c.id}">✏️ Editar</button>
+      <button class="btn btn-red sm" data-cd="${c.id}">Apagar</button>
+    </div></div>`).join(''):'<p class="empty">Nenhum cliente encontrado.</p>';
+}
+$('clBusca').oninput=renderClientes;$('clFiltro').onchange=renderClientes;
+function openClForm(c){clEdit=c||null;$('clForm').hidden=false;$('clFormT').textContent=c?'Editar cliente':'Novo cliente';
+  $('cfNome').value=c?c.nome:'';$('cfWa').value=c?fmtWa(c.whatsapp):'';$('cfCarro').value=c&&c.carro||'';$('cfEmail').value=c&&c.email||'';$('cfInt').value=c&&c.interesse||'';$('cfObs').value=c&&c.observacoes||'';$('cfOf').checked=!!(c&&c.aceita_ofertas);msg($('clMsg'),'');$('cfNome').focus()}
+$('clNovoBtn').onclick=()=>openClForm(null);
+$('clCancel').onclick=()=>{$('clForm').hidden=true};
+$('clForm').onsubmit=async e=>{e.preventDefault();
+  const wa=$('cfWa').value.replace(/\D/g,'');if(wa.length<10)return msg($('clMsg'),'WhatsApp com DDD, por favor.','err');
+  const row={nome:$('cfNome').value.trim(),whatsapp:wa,carro:$('cfCarro').value.trim()||null,email:$('cfEmail').value.trim()||null,interesse:$('cfInt').value.trim()||null,observacoes:$('cfObs').value.trim()||null,aceita_ofertas:$('cfOf').checked};
+  const r=clEdit?await sb.from('psa_clientes').update(row).eq('id',clEdit.id):await sb.from('psa_clientes').insert({...row,origem:'manual',status:'cliente'});
+  if(r.error)return msg($('clMsg'),'Erro: '+r.error.message,'err');
+  $('clForm').hidden=true;toast(clEdit?'Cliente atualizado':'Cliente cadastrado ✅');loadClientes()};
+$('clList').addEventListener('change',async e=>{const s=e.target.closest('[data-st]');if(!s)return;await sb.from('psa_clientes').update({status:s.value}).eq('id',s.dataset.st);const c=clientes.find(x=>x.id===s.dataset.st);if(c)c.status=s.value;renderClientes();toast('Status atualizado')});
+$('clList').addEventListener('click',async e=>{
+  const ed=e.target.closest('[data-ce]');if(ed){openClForm(clientes.find(x=>x.id===ed.dataset.ce));scrollTo(0,0);return}
+  const d=e.target.closest('[data-cd]');if(d){const c=clientes.find(x=>x.id===d.dataset.cd);if(!c||!confirm('Apagar o cadastro de '+c.nome+'? Não dá para desfazer.'))return;await sb.from('psa_clientes').delete().eq('id',c.id);toast('Cadastro apagado');loadClientes()}
+});
+$('clCsv').onclick=()=>{
+  const cols=['nome','whatsapp','carro','email','interesse','status','aceita_ofertas','origem','observacoes','criado_em'];
+  const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+  const csv='\ufeff'+cols.join(';')+'\n'+clientes.map(c=>cols.map(k=>q(k==='criado_em'?new Date(c[k]).toLocaleString('pt-BR'):k==='whatsapp'?fmtWa(c[k]):k==='status'?ST[c[k]]:k==='aceita_ofertas'?(c[k]?'sim':'não'):c[k])).join(';')).join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='clientes-premium-studio.csv';a.click();
+};
 
 /* ---------- LISTA DE POSTS ---------- */
 async function loadPosts(){
